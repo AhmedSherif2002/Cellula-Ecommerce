@@ -4,12 +4,15 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
-  purge: [],
+  // purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       fontFamily: {
-        inter: ['var(--font-inter)'], // 👈 Add Inter as a custom class
+        inter: ['var(--font-inter)'],
+      },
+      colors: {
+        brandRed: '#DB4444',
       },
     },
   },

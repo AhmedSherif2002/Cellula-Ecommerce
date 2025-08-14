@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { ROUTES } from "@/constants/routes";
 
 export default function Header() {
     const langSelectorRef = useRef(undefined);
@@ -28,7 +29,7 @@ export default function Header() {
                     <p>
                         Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
                     </p>
-                    <Link href="" className="text-white underline">
+                    <Link href={ROUTES.PRODUCTS} className="text-white underline">
                         Shop Now
                     </Link>
                 </div>
@@ -47,15 +48,15 @@ export default function Header() {
                 </div>
             </div>
             {/* ===== Header ===== */}
-            <div className="z-0 bg-white text-black py-6 px-16 flex flex-col sm:flex sm:flex-row justify-between items-center border-b border-gray-300 hidden">
+            <div className="z-0 bg-white text-black py-6 px-16 hidden md:flex flex-col sm:flex-row justify-between items-center border-b border-gray-300">
                 { /* Logo */}
                 <Link href="/" className="logo font-inter font-bold text-lg">Exclusive</Link>
                 { /* Navigation */}
                 <nav className="flex flex-col sm:flex-row gap-8">
-                    <Link href="/home" className={`${pathname === "/home" ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>Home</Link>
-                    <Link href="/contact" className={`${pathname === "/" ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>Contact</Link>
-                    <Link href="/about" className={`${pathname === "/" ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>About</Link>
-                    <Link href="/signup" className={`${pathname === "/signup" ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>Sign Up</Link>
+                    <Link href={ROUTES.HOME} className={`${pathname === ROUTES.HOME ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>Home</Link>
+                    <Link href={ROUTES.CONTACT} className={`${pathname === ROUTES.CONTACT ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>Contact</Link>
+                    <Link href={ROUTES.ABOUT} className={`${pathname === ROUTES.ABOUT ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>About</Link>
+                    <Link href={ROUTES.SIGNUP} className={`${pathname === ROUTES.SIGNUP ? 'underline':''} decoration-gray-300 underline-offset-4 hover:underline hover:decoration-black`}>Sign Up</Link>
                 </nav>
                 { /* Right Side */}
                 <div className="flex items-center gap-4">
@@ -67,13 +68,13 @@ export default function Header() {
                         </svg>
                     </div>
                     {/* Wishlist Icon */}
-                    <Link href="" className="cursor-pointer">
+                    <Link href={ROUTES.WHISHLIST} className="cursor-pointer">
                         <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 1C3.239 1 1 3.216 1 5.95C1 8.157 1.875 13.395 10.488 18.69C10.6423 18.7839 10.8194 18.8335 11 18.8335C11.1806 18.8335 11.3577 18.7839 11.512 18.69C20.125 13.395 21 8.157 21 5.95C21 3.216 18.761 1 16 1C13.239 1 11 4 11 4C11 4 8.761 1 6 1Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                     </Link>
                     {/* Cart Icon */}
-                    <Link href="" className="cursor-pointer">
+                    <Link href={ROUTES.CART} className="cursor-pointer">
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M11 27C11.5523 27 12 26.5523 12 26C12 25.4477 11.5523 25 11 25C10.4477 25 10 25.4477 10 26C10 26.5523 10.4477 27 11 27Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                             <path d="M25 27C25.5523 27 26 26.5523 26 26C26 25.4477 25.5523 25 25 25C24.4477 25 24 25.4477 24 26C24 26.5523 24.4477 27 25 27Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

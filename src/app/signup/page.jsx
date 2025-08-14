@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ROUTES } from "@/constants/routes";
 
 export default function Signup() {
   return (
     <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-start pl-0 p-8 sm:gap-36 gap-16">
       {/* <img src="signup.jpg" alt="" width={900}/> */}
-      <div className="w-1/2 sm:w-1/2 h-auto flex justify-center items-center bg-red-500">
+      <div className="w-1/2 sm:w-1/2 h-auto flex justify-center items-center bg-red-500 hidden sm:block">
             <Image 
             src="/signup.jpg"
             alt="Signup Image"
@@ -16,7 +17,7 @@ export default function Signup() {
             />
         </div>  
         <div className="signup-form flex flex-col sm:w-1/4 w-11/12">
-            <h1 className="lg:text-4xl md:text-2xl sm:text-xl text-sm font-inter mb-4">Create an account</h1>
+            <h1 className="lg:text-4xl md:text-2xl text-xl font-inter mb-4 font-bold">Create an account</h1>
             <p className="sm:text-md text-sm">Enter your details below</p>
             <form className="flex flex-col gap-6 mt-8">
                 <input type="text" placeholder="Name" className="border-b border-gray-300 py-2 outline-none" />
@@ -40,7 +41,7 @@ export default function Signup() {
                     <span className="ml-2">Sign up with Google</span>
                     {/* Sign up with Google */}
                 </Link>
-                <p className="text-sm">Already have an account?&nbsp;&nbsp;<Link href="/login" className="text-gray-600 font-bold underline underline-offset-4">Log in</Link></p>
+                <p className="text-sm">Already have an account?&nbsp;&nbsp;<Link href={ROUTES.LOGIN} className="text-gray-600 font-bold underline underline-offset-4">Log in</Link></p>
             </form>
         </div>
     </div>

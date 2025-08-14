@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ROUTES } from "@/constants/routes"
 
 export default function Footer() {
     return (
@@ -25,9 +26,9 @@ export default function Footer() {
                     <div className="font-inter text-lg text-lg">Account</div>
                     <button>My Account</button>
                     <div>Login / Register</div>
-                    <Link href="/cart">Cart</Link>
-                    <Link href="/cart">Whishlist</Link>
-                    <Link href="/shop">Shop</Link>
+                    <Link href={ROUTES.CART}>Cart</Link>
+                    <Link href={ROUTES.WHISHLIST}>Whishlist</Link>
+                    <Link href={ROUTES.PRODUCTS}>Shop</Link>
                 </div>
                 <div className="forth-section flex flex-col items-start justify center gap-4">
                     <div className="font-inter text-lg text-lg">Quick Link</div>
