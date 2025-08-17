@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Signup() {
+export default function Login() {
   return (
     <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-start pl-0 p-8 sm:gap-36 gap-16">
       {/* <img src="signup.jpg" alt="" width={900}/> */}

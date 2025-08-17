@@ -8,7 +8,8 @@ export default function Product({ id, imageName, title, price, discountPrice, di
     const [wishlistAdded, setWishlistAdded] = useState(false);
     const productRef = useRef(null);
 
-    const handleAddToWishlist = () => {
+    const handleAddToWishlist = (e) => {
+        e.preventDefault()
         if( wishlistAdded ) {
             // Remove from wishlist logic
             const wishlist = localStorage.getItem("wishlist") || [];
