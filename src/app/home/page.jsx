@@ -3,34 +3,33 @@
 import Link from "next/link";
 import { ROUTES } from "@/constants/routes";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import Product from "@/components/Product";
+import { getProducts } from "@/lib/api/products";
 
 export default function Home() {
     const navigatorRef = useRef(null);
     const SliderRef = useRef(null);
+    const [products, setProucts] = useState([]);
+    const [fetchingError, setFetchingError] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
-    useEffect(() => {
-        const navigatorDots = navigatorRef.current.querySelectorAll(".dot");
-        navigatorDots.forEach((dot, index) => {
-            dot.addEventListener("click", () => {
-                setCurrentSlide(index);
-            });
-        })
+    const slidesNumber = 5;
+
+    useEffect(()=>{
+        const fecthProducts = async () => {
+            try{
+                const products = await getProducts();
+                setProucts(products);
+                console.log(products);
+            }catch(e){
+                setFetchingError(true);
+            }
+        }
+        fecthProducts();
     },[])
 
     useEffect(() => {
-        const navigatorDots = navigatorRef.current.querySelectorAll(".dot");
-        navigatorDots.forEach((dot, index) => {
-            dot.classList.add("bg-gray-700");
-            dot.classList.remove("bg-red-500");
-            if (index === currentSlide) {
-                dot.classList.remove("bg-gray-700");
-                dot.classList.add("bg-red-500");
-            }
-        });
-
         const slides = SliderRef.current.querySelectorAll(".slide");
         slides.forEach((slide, index) => {
             if(index === currentSlide) {
@@ -58,14 +57,14 @@ export default function Home() {
             }
         });
 
-        const intervalId = setInterval(() => {
+        const timerId = setTimeout(() => {
             setCurrentSlide(prev => {
-                const nextSlide = (prev + 1) % navigatorDots.length;
+                const nextSlide = (prev + 1) % slidesNumber;
                 return nextSlide;
             });
         }, 5000);
 
-        return () => clearInterval(intervalId);
+        return () => clearTimeout(timerId);
 
     },[currentSlide]);
     return (
@@ -268,11 +267,9 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="navigator absolute left-1/2 top-full -translate-x-1/2 -translate-y-full flex flex-row justify-center items-center gap-4 pb-2" ref={navigatorRef}>
-                        <div className="dot cursor-pointer w-[20px] h-[20px] bg-gray-700 text-white rounded-full"></div>
-                        <div className="dot cursor-pointer w-[20px] h-[20px] bg-gray-700 text-white rounded-full"></div>
-                        <div className="dot cursor-pointer w-[20px] h-[20px] bg-gray-700 text-white rounded-full"></div>
-                        <div className="dot cursor-pointer w-[20px] h-[20px] bg-gray-700 text-white rounded-full"></div>
-                        <div className="dot cursor-pointer w-[20px] h-[20px] bg-gray-700 text-white rounded-full"></div>
+                        {[...Array(slidesNumber)].map((_, index) => (
+                            <div key={index} onClick={() => setCurrentSlide(index)} className={`dot cursor-pointer w-[20px] h-[20px] bg-gray-700 text-white rounded-full ${currentSlide === index ? "bg-red-500" : "bg-gray-700" }`}></div>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -308,12 +305,10 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="products flex flex-row justify-center items-center flex-wrap">
-                    <Product id={0} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={1} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={2} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={3} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={4} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={5} imageName={"product.png"} title={"product"} description={"product"}/>
+                    {products.map(product => (
+                            <Product key={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
+                        )
+                    )}
                 </div>
                 <div className="flex justify-center items-center">
                     <button className="w-fit px-13 py-4 text-base text-white rounded cursor-pointer" style={{backgroundColor: "#DB4444"}}>View All Products</button>
@@ -436,8 +431,11 @@ export default function Home() {
                 </div>
                 </div>
                 <div className="products flex flex-row justify-center items-center flex-wrap">
-                    <Product id={0} key={1} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={1} key={2} imageName={"product.png"} title={"product"} description={"product"}/>
+                    {products.map((product, index) => 
+                        index < 10 && (
+                            <Product key={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
+                        )
+                    )}
                 </div>
                 
                 <div className="Hero-section p-6 flex flex-col-reverse md:flex-row justify-center items-center sm:gap-10 bg-black">
@@ -493,14 +491,11 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="products flex flex-row justify-center items-center flex-wrap">
-                    <Product id={0} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={1} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={2} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={3} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={4} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={5} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={6} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={7} imageName={"product.png"} title={"product"} description={"product"}/>
+                    {products.map((product, index) => 
+                        index < 4 && (
+                            <Product key={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
+                        )
+                    )}
                 </div>
                 <div className="flex justify-center items-center">
                     <button className="w-fit px-13 py-4 text-base text-white rounded cursor-pointer" style={{backgroundColor: "#DB4444"}}>View All Products</button>

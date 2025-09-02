@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-export default function Product({ id, imageName, title, price, discountPrice, discountPercentage, ratings, newLabel, inWishlist }) {
+export default function Product({ id, imageName, title, price , rating, newLabel, inWishlist, discountPrice }) {
     const [showAddToCart, setShowAddToCart] = useState(false);
     const [color, setColor] = useState("red"); // Example colors, replace with actual data
     const [wishlistAdded, setWishlistAdded] = useState(false);
@@ -68,7 +68,7 @@ export default function Product({ id, imageName, title, price, discountPrice, di
         
         <div className="product p-2 w-full sm:w-1/2 md:w-1/4 cursor-pointer">
             <Link href="/product/id">
-                <div className="main relative bg-gray-100 rounded py-10 flex justify-center items-center flex-col" ref={productRef}>
+                <div className="main relative bg-gray-100 h-fit rounded py-10 flex justify-center items-center flex-col" ref={productRef}>
                     <div className="absolute top-2 left-2 flex flex-col gap-2">
                         {discountPrice && ( // Discount condition, replace with actual logic
                             <div className="discount text-white text-xs font-normal sm:px-2 py-1 rounded" style={{ backgroundColor: "#DB4444" }}>
@@ -95,20 +95,18 @@ export default function Product({ id, imageName, title, price, discountPrice, di
                             </svg>
                         </div>
                     </div>
-                    <div className="w-1/2 flex justify-center items-center">
+                    <div className="h-50 flex justify-center items-center">
                         <Image 
-                            src={`/${imageName}`}
                             alt={title}
-                            width={300}
-                            height={300}
-                            layout="responsive"
-                            className="w-full h-full object-cover"
+                            src={imageName}
+                            fill
+                            className="object-contain p-10"
                         />
                     </div>
                     <button className={`${showAddToCart ? "block" : "hidden"} absolute bottom-0 w-full bg-black text-white px-4 py-2 rounded cursor-pointer`}>Add to Cart</button>
                 </div>
                 <div className="p-2 flex flex-col gap-2">
-                    <h3 className="text-base font-medium">{title}</h3>
+                    <h3 className="text-base font-medium whitespace-nowrap overflow-hidden text-ellipsis" title={title}>{title}</h3>
                 {/* price */}
                     <div className="price text-base font-medium">
                         <span className="" style={{color: "#DB4444"}}>$60</span> {/* Discounted price */}
