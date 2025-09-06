@@ -1,13 +1,17 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Product from "@/components/Product";
+import { useParams } from "next/navigation";
+import { getProduct } from "@/lib/api/products";
 
 export default function ProductPage() {
 
     const [size, setSize] = useState("M");
     const [quantity, setQuantity] = useState(2);
+    const { id } = useParams();
+    const [product, setProduct] = useState();
     const sizeChangeHanlde = (e) => {
         setSize(e.target.innerText);
     }
@@ -21,61 +25,76 @@ export default function ProductPage() {
             }
         }
     }
-    return (
+
+    useEffect(()=>{
+        console.log("id: ", id);
+        getProduct(id).then(setProduct).catch(e => console.log("Error fetching the product", e));
+    }, [])
+
+    useEffect(()=>{ // Debugging
+        console.log(product);
+    }, [product])
+
+
+    return product && (
         <div className="flex flex-col my-10 md:px-10 px-10">
-            <div className="">Product</div>
+            <div className="">{product?.title}</div>
             <div className="current-product flex flex-col md:flex-row gap-24 mt-6 mb-20">
-                <div className="show flex flex-col-reverse md:flex-row justify-center items-center gap-3 w-full md:w-1/2">
-                    <div className="left flex flex-row md:flex-col gap-4">
-                        <div className="bg-gray-100 p-3 rounded">
+                <div className="show flex h-130 flex-col-reverse md:flex-row justify-center items-center gap-3 w-full md:w-1/2">
+                    <div className="left flex flex-row md:flex-col w-full h-1/4 md:w-1/4 md:h-full gap-4">
+                        <div className="bg-gray-100 relative w-1/4 md:h-1/4 md:w-full rounded">
                             <Image 
-                                src="/product.png"
+                                src={product?.image}
                                 alt="product"
-                                width={125}
-                                height={100}
-                                className=""
+                                fill
+                                className="cursor-pointer object-contain p-2"
                             />
                         </div>
-                        <div className="bg-gray-100 p-3 rounded">
+                        <div className="bg-gray-100 relative w-1/4 md:h-1/4 md:w-full rounded">
                             <Image 
-                                src="/product.png"
+                                src={product?.image}
                                 alt="product"
-                                width={125}
-                                height={100}
-                                className=""
+                                fill
+                                className="cursor-pointer object-contain p-2"
                             />
                         </div>
-                        <div className="bg-gray-100 p-3 rounded">
+                        <div className="bg-gray-100 relative w-1/4 md:h-1/4 md:w-full rounded">
                             <Image 
-                                src="/product.png"
+                                src={product?.image}
                                 alt="product"
-                                width={125}
-                                height={100}
-                                className=""
+                                fill
+                                className="cursor-pointer object-contain p-2"
                             />
                         </div>
-                        <div className="bg-gray-100 p-3 rounded">
+                        <div className="bg-gray-100 relative w-1/4 md:h-1/4 md:w-full rounded">
                             <Image 
-                                src="/product.png"
+                                src={product?.image}
                                 alt="product"
-                                width={125}
-                                height={100}
-                                className=""
+                                fill
+                                className="cursor-pointer object-contain p-2"
                             />
                         </div>
                     </div>
-                    <div className="main flex flex-col justify-center items-center p-4 bg-gray-100 h-full w-full rounded">
+                    <div className="bg-gray-100 w-full h-full md:h-full relative rounded">
                         <Image 
-                            src="/product.png"
+                            alt={product.title}
+                            src={product.image}
+                            fill
+                            className="object-contain p-20 md:p-10"
+                        />
+                    </div>
+                    {/* <div className="main flex flex-col justify-center items-center p-4 bg-gray-100 h-[300px] w-[500px] rounded">
+                        <Image 
+                            src={product?.image}
                             alt="product"
                             width={500}
                             height={500}
                             className="object-cover"
                         />
-                    </div>
+                    </div> */}
                 </div>
                 <div className="details flex flex-col items-stretch gap-4 md:w-2/5 w-full">
-                    <h2 className="text-3xl">Product</h2>
+                    <h2 className="text-3xl">{product.title}</h2>
                     <div className="flex flex-row">
                         <div className="flex flex-row items-center gap-2">
                             <div className="starts flex flex-row">
@@ -95,13 +114,13 @@ export default function ProductPage() {
                                     <path d="M8 12.5L3.5 15L4.5 10.5L1 6.5L5.5 6L8 1L10.5 6L15 6.5L11.5 10.5L12.5 15L8 12.5Z" fill="#bbb"/>
                                 </svg>
                             </div>
-                            <span className="text-sm text-gray-400">&#40;150 reviews&#41;</span>
+                            <span className="text-sm text-gray-400">&#40;{product.rating.count} reviews&#41;</span>
                             <span className="text-gray-400">|</span>
                             <span className="text-green-500">In-stock</span>
                         </div>
                     </div>
-                    <div className="text-lg">$ 124</div>
-                    <div className="text-sm pb-4 border-b-2 border-gray-100 flex-1">PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal Pressure sensitive.</div>
+                    <div className="text-lg">$ {product.price}</div>
+                    <div className="text-sm pb-4 border-b-2 border-gray-100 flex-1">{product.description}</div>
                     <div className="colors flex flex-row gap-3">
                         <span>Colors: </span>
                         {true && (
@@ -183,10 +202,10 @@ export default function ProductPage() {
                     <div className="font-semibold font-Poppins text-base" style={{color: "#DB4444"}}>Related Items</div>     
                 </div>
                 <div className="products flex flex-row justify-center items-center flex-wrap">
-                    <Product id={0} imageName={"product.png"} title={"product"} description={"product"}/>
+                    {/* <Product id={0} imageName={"product.png"} title={"product"} description={"product"}/>
                     <Product id={1} imageName={"product.png"} title={"product"} description={"product"}/>
                     <Product id={2} imageName={"product.png"} title={"product"} description={"product"}/>
-                    <Product id={3} imageName={"product.png"} title={"product"} description={"product"}/>
+                    <Product id={3} imageName={"product.png"} title={"product"} description={"product"}/> */}
                 </div>
             </div>
         </div>

@@ -7,9 +7,9 @@ export const getProducts = async () => {
 }
 
 export const getProduct = async (id) => {
-    const data = await fetch(`https://fakestoreapi.com/products/${id}`);
+    const res = await fetch(`https://fakestoreapi.com/products/${id}`);
     if(!res.ok) throw new Error("Error fetching products");
-    const product = await data.json();
+    const product = await res.json();
     return product;
 }
 
