@@ -1,3 +1,4 @@
+import { addToWishlist, isInWishlist, removeFromWishlist } from "@/lib/wishlist";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -8,42 +9,20 @@ export default function Product({ id, imageName, title, price , rating, newLabel
     const [wishlistAdded, setWishlistAdded] = useState(false);
     const productRef = useRef(null);
 
-    const handleAddToWishlist = (e) => {
-        e.preventDefault()
+    const handleAddToWishlist = () => {
+        // Remove from wishlist (If it was added)
         if( wishlistAdded ) {
-            // Remove from wishlist logic
-            const wishlist = localStorage.getItem("wishlist") || [];
-            const wishlistArray = Array.isArray(wishlist) ? wishlist : JSON.parse(wishlist);
-            // Check if item exists in wishlist
-            const itemExists = wishlistArray.some(item => item.id === id);
-            if(!itemExists) {
-                alert("Item not found in wishlist");
-                return;
-            }
-            const updatedWishlist = wishlistArray.filter(item => item.id !== id);
-            localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+            removeFromWishlist(id);
             setWishlistAdded(false);
-            alert("Removed from Wishlist");
             return;
         }
         // ADD product to wishlist
-        const wishlist = localStorage.getItem("wishlist") || [];
-        const wishlistArray = Array.isArray(wishlist) ? wishlist : JSON.parse(wishlist);
-        // Check if it's already in the wishlist
-        const exists = wishlistArray.some(item => item.id === id);
-        if(exists) {
-            alert("Product was already added");
-            return
-        }
-        wishlistArray.push({ id, imageName, title, price, discountPrice, discountPercentage, ratings });
-        localStorage.setItem("wishlist", JSON.stringify(wishlistArray));
+        addToWishlist(id);
         setWishlistAdded(true);
-        alert("Added to Wishlist");
-        // TODO: Call API to add product to wishlist
     };
 
     useEffect(() => {
-        setWishlistAdded(inWishlist);
+        setWishlistAdded(isInWishlist(id));
         const handleMouseEnter = () => {
             setShowAddToCart(true);
 
@@ -65,8 +44,7 @@ export default function Product({ id, imageName, title, price , rating, newLabel
     }, []);
 
     return (
-        
-        <div className="product p-2 w-full sm:w-1/2 md:w-1/4 cursor-pointer">
+        <div className="product p-2 w-full sm:w-1/2 md:w-1/4 ">
             <Link href="/product/id">
                 <div className="main relative bg-gray-100 h-fit rounded py-10 flex justify-center items-center flex-col" ref={productRef}>
                     <div className="absolute top-2 left-2 flex flex-col gap-2">
@@ -82,8 +60,12 @@ export default function Product({ id, imageName, title, price , rating, newLabel
                         )}
                     </div>
                     {/* wishlistIcon */}
-                    <div className="absolute top-2 right-2 flex flex-col gap-2">
-                        <div className={`wishlist cursor-pointer rounded-full sm:p-2 flex justify-center items-center hover:bg-gray-200 transition-colors duration-300 ${wishlistAdded ? "bg-red-400" : "bg-white"}`} onClick={handleAddToWishlist}>
+                    <div className="absolute top-2 right-2 flex flex-col gap-2 z-10">
+                        <div className={`wishlist cursor-pointer rounded-full sm:p-2 flex justify-center items-center hover:bg-gray-200 transition-colors duration-300 ${wishlistAdded ? "bg-red-400" : "bg-white"}`} onClick={(e) => {
+                            e.preventDefault();
+                            // e.stopPropagation();
+                            handleAddToWishlist();
+                        }}>
                             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 1C2.7912 1 1 2.73964 1 4.88594C1 6.61852 1.7 10.7305 8.5904 14.8873C8.71383 14.961 8.85552 15 9 15C9.14448 15 9.28617 14.961 9.4096 14.8873C16.3 10.7305 17 6.61852 17 4.88594C17 2.73964 15.2088 1 13 1C10.7912 1 9 3.35511 9 3.35511C9 3.35511 7.2088 1 5 1Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>

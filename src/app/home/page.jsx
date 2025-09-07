@@ -306,7 +306,7 @@ export default function Home() {
                 </div>
                 <div className="products flex flex-row justify-center items-center flex-wrap">
                     {products.map(product => (
-                            <Product key={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
+                            <Product key={product.id} id={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
                         )
                     )}
                 </div>
@@ -433,7 +433,7 @@ export default function Home() {
                 <div className="products flex flex-row justify-center items-center flex-wrap">
                     {products.map((product, index) => 
                         index < 10 && (
-                            <Product key={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
+                            <Product key={product.id} id={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
                         )
                     )}
                 </div>
@@ -493,7 +493,7 @@ export default function Home() {
                 <div className="products flex flex-row justify-center items-center flex-wrap">
                     {products.map((product, index) => 
                         index < 4 && (
-                            <Product key={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
+                            <Product key={product.id} id={product.id} title={product.title} imageName={product.image} price={product.price} rating={product.rating}/>
                         )
                     )}
                 </div>
