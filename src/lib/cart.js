@@ -21,8 +21,15 @@ export const addToCart = (productId, quantity) => {
         localStorage.setItem("cart", JSON.stringify(newCart));
         return;
     }
-    const newCart = currentCart.map(product => product.id === productId ? { ...product, quantity: quantity ? quantity : quantity + 1 } : product);
+    const newCart = currentCart.map(product => product.id === productId ? { ...product, quantity: quantity ? quantity : product.quantity + 1 } : product);
     localStorage.setItem("cart", JSON.stringify(newCart));
+}
+
+export const isInCart = (productId) => {
+    const cart = getCart();
+    const found = cart.find(product => productId === product.id);
+    if(!found) return 0;
+    return found.quantity;
 }
 
 export const clearCart = () => {

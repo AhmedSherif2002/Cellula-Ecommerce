@@ -5,12 +5,13 @@ import { useEffect, useState } from "react"
 import Product from "@/components/Product";
 import { useParams } from "next/navigation";
 import { getProduct } from "@/lib/api/products";
+import { addToCart, isInCart } from "@/lib/cart";
 
 export default function ProductPage() {
 
     const [size, setSize] = useState("M");
     const [quantity, setQuantity] = useState(2);
-    const { id } = useParams();
+    const id = parseInt(useParams().id);
     const [product, setProduct] = useState();
     const sizeChangeHanlde = (e) => {
         setSize(e.target.innerText);
@@ -26,9 +27,16 @@ export default function ProductPage() {
         }
     }
 
+    const addToCartHandle = (e) => {
+        e.preventDefault();
+        addToCart(id, quantity)
+        alert(`Product ${product?.title}:id: ${id} was added to cart`);
+    }
+
     useEffect(()=>{
-        console.log("id: ", id);
         getProduct(id).then(setProduct).catch(e => console.log("Error fetching the product", e));
+        const quantity = isInCart(id);
+        setQuantity(quantity > 0 ? quantity : 2);
     }, [])
 
     useEffect(()=>{ // Debugging
@@ -146,7 +154,7 @@ export default function ProductPage() {
                             <span className="border-1 border-gray-300 text-center w-18 flex flex-col justify-center">{quantity}</span>
                             <button data-operator="+" className="border-r border-t border-b border-gray-300 text-center p-2 rounded-tr rounded-br cursor-pointer hover:bg-red-400 w-9" onClick={quantityChangeHanlde}>+</button>
                         </div>
-                        <button className="px-10 py-2 text-xs text-white font-medium rounded cursor-pointer w-full" style={{backgroundColor: "#DB4444"}}>Buy Now</button>
+                        <button className="px-10 py-2 text-xs text-white font-medium rounded cursor-pointer w-full" style={{backgroundColor: "#DB4444"}} onClick={addToCartHandle}>Buy Now</button>
                         <button className="border-1 border-gray-300 p-2 cursor-pointer hover:bg-red-400 rounded">
                             <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6 1C3.239 1 1 3.216 1 5.95C1 8.157 1.875 13.395 10.488 18.69C10.6423 18.7839 10.8194 18.8335 11 18.8335C11.1806 18.8335 11.3577 18.7839 11.512 18.69C20.125 13.395 21 8.157 21 5.95C21 3.216 18.761 1 16 1C13.239 1 11 4 11 4C11 4 8.761 1 6 1Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
