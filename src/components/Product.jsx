@@ -1,4 +1,4 @@
-import { addToCart } from "@/lib/cart";
+import { addToCart, addToCartHandle } from "@/lib/cart";
 import { addToWishlist, isInWishlist, removeFromWishlist } from "@/lib/wishlist";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,12 +21,6 @@ export default function Product({ id, imageName, title, price , rating, newLabel
         addToWishlist(id);
         setWishlistAdded(true);
     };
-
-    const addToCartHandle = (e) => {
-        e.preventDefault();
-        addToCart(id);
-        alert(`Product ${title}:id: ${id} was added to cart`);
-    }
 
     useEffect(() => {
         setWishlistAdded(isInWishlist(id));
@@ -92,7 +86,7 @@ export default function Product({ id, imageName, title, price , rating, newLabel
                             className="object-contain p-10"
                         />
                     </div>
-                    <button className={`${showAddToCart ? "block" : "hidden"} absolute bottom-0 w-full bg-black text-white px-4 py-2 rounded cursor-pointer`} onClick={addToCartHandle}>Add to Cart</button>
+                    <button className={`${showAddToCart ? "block" : "hidden"} absolute bottom-0 w-full bg-black text-white px-4 py-2 rounded cursor-pointer`} onClick={e => addToCartHandle(e, id, title, null, price, imageName)}>Add to Cart</button>
                 </div>
                 <div className="p-2 flex flex-col gap-2">
                     <h3 className="text-base font-medium whitespace-nowrap overflow-hidden text-ellipsis" title={title}>{title}</h3>

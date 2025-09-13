@@ -13,11 +13,13 @@ export const removeFromCart = (productId) => {
     localStorage.setItem("cart", JSON.stringify(newCart));
 }
 
-export const addToCart = (productId, quantity) => {
+export const addToCart = (productId, title, imageUrl, quantity, price) => {
     const currentCart = getCart();
+    console.log(productId, title, imageUrl, quantity, price)
     const exists = currentCart.find(product => product.id === productId);
+    console.log("ss", exists)
     if(!exists){
-        const newCart = currentCart.concat({ id: productId, quantity: quantity ? quantity : 1 });
+        const newCart = currentCart.concat({ id: productId, quantity: quantity ? quantity : 1, price, title, imageUrl });
         localStorage.setItem("cart", JSON.stringify(newCart));
         return;
     }
@@ -34,4 +36,11 @@ export const isInCart = (productId) => {
 
 export const clearCart = () => {
     localStorage.removeItem("cart");
+}
+
+export const addToCartHandle = (e, id, title, quantity, price, imageUrl) => {
+    e.preventDefault();
+    console.log("quantity:", quantity, "Price:", price);
+    addToCart(id, title, imageUrl, quantity, price);
+    alert(`Product id: ${id} was added to cart`);
 }
