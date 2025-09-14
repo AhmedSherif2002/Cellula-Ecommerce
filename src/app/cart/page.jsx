@@ -3,6 +3,8 @@
 import CartProduct from "@/components/CartProduct"
 import { Josefin_Sans } from "next/font/google";
 import { useEffect, useState } from "react"
+import Link from "next/link";
+import { ROUTES } from "@/constants/routes"
 
 export default function Cart() {
     const shippingFees = parseFloat(50);
@@ -83,7 +85,10 @@ export default function Cart() {
                         <span className="font-bold text-lg">Total</span>
                         <span className="font-bold text-lg">${(parseFloat(price)+shippingFees).toFixed(2)}</span>
                     </div>
-                    <button className="rounded text-white px-8 py-2 cursor-pointer w-full" style={{backgroundColor: "#DB4444"}}>Proceed To Checkout</button>
+                    <Link className="rounded text-white px-8 py-2 cursor-pointer w-full" style={{backgroundColor: "#DB4444"}} href={ROUTES.CHECKOUT}>
+                        Proceed To Checkout
+                    </Link>
+                    {/* <button className="rounded text-white px-8 py-2 cursor-pointer w-full" style={{backgroundColor: "#DB4444"}}>Proceed To Checkout</button> */}
                 </div>
             </div>
         </div>

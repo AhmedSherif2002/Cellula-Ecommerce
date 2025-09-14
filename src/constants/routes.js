@@ -10,5 +10,5 @@ export const ROUTES = {
     PRODUCTS: "/products",
     CHECKOUT: "/checkout",
     ORDERS: "/orders",
-    PROFILE: "/profile",
+    ACCOUNT: "/account",
 }    

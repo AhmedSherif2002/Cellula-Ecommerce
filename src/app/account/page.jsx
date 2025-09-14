@@ -1,13 +1,21 @@
 "use client"
 
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useUser } from '../hooks/useUser';
 
 export default function AccountPage() {
     const [section, setSection] = useState("profile");
+    const { user } = useUser();
     const sectionChangeHandler = (e) => {
         const currentSection = e.target.dataset.section;
         setSection(currentSection);
     }
+
+    if(!user) return(
+        <div className='flex justify-center items-center text-3xl p-30'>
+            Login to access this page.
+        </div>
+    ) 
 
     return (
         <div className='flex flex-col gap-8 m-12 lg:mx-25'>
@@ -39,17 +47,17 @@ export default function AccountPage() {
                     <div className='name flex flex-row justify-between'>
                         <div className='flex flex-col gap-2'>
                             <label className='' htmlFor="">First Name</label>
-                            <input className='bg-gray-100 p-3 rounded outline-none w-90' disabled placeholder='Ahmed' type="text" />
+                            <input className='bg-gray-100 p-3 rounded outline-none w-90' disabled value={user.firstName} type="text" />
                         </div>
                         <div className='flex flex-col gap-2'>
                             <label className='' htmlFor="">Last Name</label>
-                            <input className='bg-gray-100 p-3 rounded outline-none w-90' disabled placeholder='Ahmed' type="text" />
+                            <input className='bg-gray-100 p-3 rounded outline-none w-90' disabled value={user.lastName} type="text" />
                         </div>
                     </div>
                     <div className='mail-address flex flex-row justify-between'>
                         <div className='flex flex-col gap-2'>
                             <label className='' htmlFor="">Email</label>
-                            <input className='bg-gray-100 p-3 rounded outline-none w-90' disabled placeholder='ahmed@gmail.com' type="text" />
+                            <input className='bg-gray-100 p-3 rounded outline-none w-90' disabled value={user.email} type="text" />
                         </div>
                         <div className='flex flex-col gap-2'>
                             <label className='' htmlFor="">Address</label>
